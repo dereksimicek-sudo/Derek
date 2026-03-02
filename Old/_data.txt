@@ -1,0 +1,10 @@
+První řádek souboru.
+Toto je druhý řádek.
+Řídicí struktury, jako jsou cykly, jsou základem programování.
+Čtvrtý řádek obsahuje nějaká čísla: 12345.
+Tento soubor slouží jako příklad pro čtení v Pythonu.
+Šestý řádek.
+Sedmý řádek s několika speciálními znaky: !@#$%^&*()
+    Tento řádek má na začátku odsazení.
+Předposlední, devátá položka.
+Konec souboru, toto je poslední, desátý řádek.
