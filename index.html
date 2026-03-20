@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Age of War</title>
+
+    <!-- Brython allows Python to run in browser -->
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.11.1/brython.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.11.1/brython_stdlib.js"></script>
+</head>
+
+<body onload="brython()">
+
+<h1>Mini Age of War</h1>
+
+<!-- Canvas where the game will be drawn -->
+<canvas id="game" width="800" height="300" style="border:1px solid black;"></canvas>
+
+<!-- Load Python game script -->
+<script type="text/python" src="game.py"></script>
+
+</body>
+</html>
