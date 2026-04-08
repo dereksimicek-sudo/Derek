@@ -57,6 +57,7 @@ class Unit:
         self.y = y
         self.speed = 1
         self.direction = direction  # 1 = right, -1 = left
+        self.health = 3  # how many hits unit can take
 
     def move(self):
         self.x += self.speed * self.direction
@@ -113,32 +114,38 @@ def draw():
         ctx.fillRect(enemy.x, enemy.y, 10, 10)
 
 # -------------------------------
+# COMBAT
+# -------------------------------
+def handle_combat():
+    for unit in units:
+        for enemy in enemy_units:
+
+            if abs(unit.x - enemy.x) < 10:
+                unit.health -= 1
+                enemy.health -= 1
+
+    # REMOVE DEAD UNITS (must be inside function!)
+    units[:] = [u for u in units if u.health > 0]
+    enemy_units[:] = [e for e in enemy_units if e.health > 0]
+
+# -------------------------------
 # GAME LOOP
 # -------------------------------
 def game_loop():
-    """
-    Main game loop.
-
-    This function runs repeatedly (about 60 times per second).
-    It updates the game and redraws everything.
-    """
-
-def game_loop():
     if game_running:
 
-        # Move all units
+        # Move units ONCE
         for unit in units:
             unit.move()
 
-        draw()
-
-        # Move player units
-        for unit in units:
-            unit.move()
-
-        # Move enemy units
         for enemy in enemy_units:
             enemy.move()
+
+        # Handle combat
+        handle_combat()
+
+        # Draw everything
+        draw()
 
 # Run the game loop every 16 ms (~60 FPS)
 timer.set_interval(game_loop, 16)
