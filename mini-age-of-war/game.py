@@ -8,37 +8,13 @@ canvas = document["game"]
 ctx = canvas.getContext("2d")
 
 # -------------------------------
-# DRAW FUNCTION
-# -------------------------------
-def draw():
-    """
-    This function draws basic elements on the screen.
-
-    It will be expanded later to include units, combat,
-    and animations.
-    """
-
-    # Clear the screen
-    ctx.clearRect(0, 0, 800, 300)
-
-    # Draw ground
-    ctx.fillStyle = "lightgreen"
-    ctx.fillRect(0, 200, 800, 100)
-
-    # Draw player base (left side)
-    ctx.fillStyle = "blue"
-    ctx.fillRect(20, 150, 50, 50)
-
-    # Draw enemy base (right side)
-    ctx.fillStyle = "red"
-    ctx.fillRect(730, 150, 50, 50)
-    
-# -------------------------------
 # GAME STATE
 # -------------------------------
 
 # This variable controls whether the game is running
 game_running = True
+player_base_health = 20
+enemy_base_health = 20
 
 # List to store all units
 units = []
@@ -107,11 +83,16 @@ def draw():
     # Draw all units
     for unit in units:
         unit.draw()
-
+    
     # Draw enemy units
     for enemy in enemy_units:
         ctx.fillStyle = "darkred"
         ctx.fillRect(enemy.x, enemy.y, 10, 10)
+
+    # Display base health (OUTSIDE loop!)
+    ctx.fillStyle = "black"
+    ctx.fillText(f"Player: {player_base_health}", 20, 20)
+    ctx.fillText(f"Enemy: {enemy_base_health}", 650, 20)
 
 # -------------------------------
 # COMBAT
@@ -128,23 +109,51 @@ def handle_combat():
     units[:] = [u for u in units if u.health > 0]
     enemy_units[:] = [e for e in enemy_units if e.health > 0]
 
+def handle_base_damage():
+    global player_base_health, enemy_base_health, game_running
+
+    # Player units hitting enemy base
+    for unit in units:
+        if unit.x > 730:  # reached enemy base
+            enemy_base_health -= 1
+            unit.health = 0  # unit disappears
+
+    # Enemy units hitting player base
+    for enemy in enemy_units:
+        if enemy.x < 70:  # reached player base
+            player_base_health -= 1
+            enemy.health = 0
+
+    # Check win/lose
+    if enemy_base_health <= 0:
+        print("YOU WIN!")
+        game_running = False
+
+    if player_base_health <= 0:
+        print("YOU LOSE!")
+        game_running = False
+
 # -------------------------------
 # GAME LOOP
 # -------------------------------
+
 def game_loop():
     if game_running:
 
-        # Move units ONCE
+        # Move units
         for unit in units:
             unit.move()
 
         for enemy in enemy_units:
             enemy.move()
 
-        # Handle combat
+        # Combat first
         handle_combat()
 
-        # Draw everything
+        # Then base damage
+        handle_base_damage()
+
+        # THEN draw (last!)
         draw()
 
 # Run the game loop every 16 ms (~60 FPS)
