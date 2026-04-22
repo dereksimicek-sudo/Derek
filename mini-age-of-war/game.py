@@ -10,6 +10,7 @@ ctx = canvas.getContext("2d")
 # -------------------------------
 # GAME STATE
 # -------------------------------
+game_result = ""
 
 # This variable controls whether the game is running
 game_running = True
@@ -94,6 +95,11 @@ def draw():
     ctx.fillText(f"Player: {player_base_health}", 20, 20)
     ctx.fillText(f"Enemy: {enemy_base_health}", 650, 20)
 
+    # Display win/lose message
+    if not game_running:
+        ctx.fillStyle = "black"
+        ctx.font = "30px Arial"
+        ctx.fillText(game_result, 300, 150)
 # -------------------------------
 # COMBAT
 # -------------------------------
@@ -124,14 +130,15 @@ def handle_base_damage():
             player_base_health -= 1
             enemy.health = 0
 
-    # Check win/lose
-    if enemy_base_health <= 0:
-        print("YOU WIN!")
-        game_running = False
+        global game_result
 
-    if player_base_health <= 0:
-        print("YOU LOSE!")
-        game_running = False
+        if enemy_base_health <= 0:
+            game_result = "YOU WIN!"
+            game_running = False
+
+        if player_base_health <= 0:
+            game_result = "YOU LOSE!"
+            game_running = False
 
 # -------------------------------
 # GAME LOOP
