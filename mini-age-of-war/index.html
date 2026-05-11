@@ -8,12 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/brython@3.11.1/brython_stdlib.js"></script>
 </head>
 
-<body onload="brython()">
+<body onload="brython()" style="margin:0;overflow:hidden;">
 
-<h1>Mini Age of War</h1>
+<button id="startButton" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;padding:15px 30px;font-size:18px;background-color:#4CAF50;color:white;border:none;border-radius:5px;cursor:pointer;">Start Game</button>
 
 <!-- Canvas where the game will be drawn -->
-<canvas id="game" width="800" height="300" style="border:1px solid black;"></canvas>
+<canvas id="game" width="800" height="300" style="display:block;width:100vw;height:100vh;border:1px solid black;"></canvas>
 
 <!-- Load Python game script -->
 <script type="text/python" src="game.py"></script>
